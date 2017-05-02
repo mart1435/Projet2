@@ -1,1 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+/*
+*setCOnditions prend argc et argv du main en argument, ainsi que des pointeurs dirigés vers les variables *associées *au nombre de threads, au caractère spécifique de sélection et aux nombres de fichiers
+*la fonction définit le nombre de threads utilisés, le caractère de sélection et le nombre de fichiers qui seront *traduits
+*
+*/
 
+int statut;  \\ détermine le statut afin de savoir où se situent les fichiers dans les arguments de l'exécutable
+int nbr_threads =1;
+int nbr_files;
+char charact= 'a';
+
+
+
+void setConditions(int argc, char *argv[], int *nbr_threads, char *c,int  *nbr_files){
+  int nbr_args = argc;
+  if(argv[1][0] =='-' && argv[1][1]=='t') {
+    *nbr_threads = atoi(argv[2]);
+    if(argv[3][0] =='-' && argv[3][1]=='l') {
+      *c = argv[4][0];
+      *nbr_files = nbr_args -5;
+      statut = 1; 
+    }
+    else {
+      *c='a';
+      *nbr_files = nbr_args -3;
+      statut = 2;
+    }
+  }
+  else if(argv[1][0] =='-' && argv[1][1]=='l'){
+    *nbr_threads =1;
+    *c = argv[2][0];
+    *nbr_files = nbr_args - 3;
+    statut = 3;
+  }
+  else{
+    *nbr_threads=1;
+    *c='a';
+    *nbr_files = nbr_args-1;
+    statut = 4;
+  }
+}
+  
+
+
+int main(int argc, char *argv[]){
+ 
+  
+  setConditions(argc,argv,&nbr_threads,&charact,&nbr_files);
+
+  printf("%d threads\n%c le charactere\n%d le nbr de fichiers\n",nbr_threads,charact,nbr_files);
+}
